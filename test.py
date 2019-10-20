@@ -20,7 +20,7 @@ r = requests.get(url)
 response = r.json()
 
 
-print(user_name + " just passed by " + response["results"][0]["name"])
+print(user_name + " just passed by " + response["results"][1]["name"])
 
 
 client = Client(cfg["account_sid"], cfg["auth_token"])
