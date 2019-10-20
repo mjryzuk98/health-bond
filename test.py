@@ -20,7 +20,7 @@ def notify(user, number, location):
 
     print(user + " just passed by " + response["results"][1]["name"])
 
-    message = client.messages.create(
+    message = CLIENT.messages.create(
         body = user + " just passed by " + response["results"][1]["name"],
         from_ = CLIENT_NUM,
         to = number
