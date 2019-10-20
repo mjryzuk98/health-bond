@@ -17,14 +17,12 @@ CLIENT_NUM = "+17732957498"
 def notify(user, number, location):
     url = URL_BASE + "&location=" + location
     response = requests.get(url).json()
-
     print(user + " just passed by " + response["results"][1]["name"])
     message = CLIENT.messages.create(
         body = user + " just passed by " + response["results"][1]["name"],
         from_ = CLIENT_NUM,
         to = number
     )
-
     print(message.sid)
 
 
