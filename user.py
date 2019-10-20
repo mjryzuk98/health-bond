@@ -32,6 +32,3 @@ class User:
         _s += ")"
         return _s
 
-if __name__ == "__main__":
-    j = User("Jar8", "+19739780831")
-    print(j.name())
