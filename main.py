@@ -4,44 +4,46 @@ import services
 
 app = Flask(__name__)
 
-users = {}  # username: User object
-
+users = {}
 
 @app.route("/")
 def index():
-    return "Server is up"
-
-# currently params should be <user_id>:[,params]
-# change to better way of passing params
+    return "Welcome to Health Bond!"
 
 
-@app.route("/register_user/<account>")  # usrname;name;number
-def register_user(account):
-    params = account.split(';')
-    username = params[0]
-    users[username] = User(params[1], params[2])
-    print(users[username])
-    return "register_user"
+@app.route("/register/<user>/<name>/<number>")
+def register(user=None, name=None, number=None):
+    if user is None or name is None or number is None:
+        return "Unable to register user"
+    users[user] = User(name, number)
+    return "Registered " + user + " with name " + name \
+        + " and number " + number
 
 
-# usrname;phone_num;phone_num;...
-@app.route("/update_subscribers/<subscribers>")
-def update_subscribers(subscribers):
-    params = subscribers.split(';')
-    username = params[0]
-    users[username].set_partners(params[1:])
-    print(users[username])
-    return "update_subscribers"
+# subscribers: comma separated list
+@app.route("/<user>/update/<subs>")
+def update_subscribers(user=None, subs=None):
+    if user is None or subs is None:
+        return "Unable to update user subscribers"
+    if user not in users:
+        return "User not found, please register first"
+    users[user].set_partners(subs.split(","))
+    return "Updated subscribers for " + user
 
 
-@app.route("/coords/<latlong>")  # usrname;latlong
-def get_places(latlong):
-    params = latlong.split(';')
-    username = params[0]
-    users[username].set_location(params[1], params[2])
-    services.notify(users[username])
-    print(users[username])
-    return "get_places"
+# xy coords separated by comma
+@app.route("/<user>/coords/<loc>")
+def get_places(user, loc):
+    if user is None or loc is None:
+        return "Unable to update location"
+    if user not in users:
+        return "User not found, please register first"
+    coords = loc.split(",")
+    if len(coords) < 2:
+        return "Invalid location" 
+    users[user].set_location(coords[0], coords[1])
+    services.notify(users[user])
+    return "Updated location"
 
 
 if __name__ == "__main__":
