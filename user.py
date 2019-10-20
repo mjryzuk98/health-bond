@@ -1,9 +1,3 @@
-"""
-user.py
-Abhi Sinha
-
-User model.
-"""
 from __future__ import annotations
 
 
