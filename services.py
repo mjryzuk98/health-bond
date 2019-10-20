@@ -32,19 +32,9 @@ def notify(user: User):
 
     for partner in user.partners():
         print("Notifying: " + partner)
-        messages += CLIENT.messages.create(
+        CLIENT.messages.create(
             body=_body,
             from_=CLIENT_NUM,
             to=partner
         )
 
-    print(messages.sid)
-
-
-if __name__ == "__main__":
-
-    j = User("Jar8", "+19739780831")
-    a = User("Abhi", "+19739002003")
-    j.set_partner(a)
-    j.set_location(40.5008, -74.4474)
-    notify(j)
