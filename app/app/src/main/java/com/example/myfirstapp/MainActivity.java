@@ -2,21 +2,29 @@ package com.example.myfirstapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -25,6 +33,20 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private FusedLocationProviderClient locationClient;
     ExecutorService executor;
+
+    private String myPhone;
+    private ArrayList<String> subNums;
+    private int subSize;
+
+    private String strLocation;
 
     private LocationRequest mLocationRequest;
 
@@ -49,11 +77,15 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+
         // init location client on MainActivity create
         locationClient = getFusedLocationProviderClient(this);
 
         TextView txt = findViewById(R.id.output);
-        txt.setText("asoufhsaifuhs");
+        txt.setText("");
+
+        subNums = new ArrayList<String>();
+        subSize = 0;
 
         startLocationUpdates();
 
@@ -81,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });*/
     }
+
 
     // Trigger new location updates at interval
     protected void startLocationUpdates() {
@@ -121,10 +154,55 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void captureNumber(View view) {
+        EditText number;
+        try {
+            switch (view.getId()) {
+                case R.id.button:
+                    number = findViewById(R.id.editText);
+                    String temp = number.getText().toString();
+                    long num = Long.parseLong(temp);
+                    myPhone = number.getText().toString();
+                    number.setText("");
+                    break;
+
+                case R.id.button2:
+                    number = findViewById(R.id.editText2);
+                    num = Long.parseLong(number.getText().toString());
+                    subNums.add(number.getText().toString());
+                    subSize++;
+                    //submitRequest();
+                    break;
+                case R.id.button3:
+                    if (subSize > 0) {
+                        subNums.remove(subNums.size() - 1);
+                        subSize--;
+                    }
+                    break;
+            }
+            updateLog();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     public void onLocationChanged(Location location) {
-        String message = Double.toString(location.getLatitude()) + " " + Double.toString(location.getLongitude());
-        TextView editText = findViewById(R.id.output);
-        editText.setText(message);
+        strLocation = Double.toString(location.getLatitude()) + " " + Double.toString(location.getLongitude());
+        updateLog();
+    }
+
+    public void updateLog() {
+        String message = "Current Location:\n" + strLocation + "\nYour Phone Number:\n" + myPhone + "\nSubscribers Phone Numbers:\n";
+        for (int i = 0; i < subNums.size(); i++) {
+            message += subNums.get(i) + "\n";
+        }
+        TextView logText = findViewById(R.id.output);
+        logText.setText(message);
+    }
+
+    public void submitRequest() throws MalformedURLException, ProtocolException, IOException {
+
     }
 
    /* @Override
