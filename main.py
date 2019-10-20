@@ -16,6 +16,8 @@ def index():
 def register(user=None, name=None, number=None):
     if user is None or name is None or number is None:
         return "Unable to register user"
+    if user in users:
+        return "User already exists"
     users[user] = User(name, number)
     return "Registered " + user + " with name " + name \
         + " and number " + number
