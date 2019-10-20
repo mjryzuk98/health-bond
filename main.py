@@ -47,7 +47,7 @@ def get_places(user=None, loc=None):
         coords = loc.split(",")
         if len(coords) < 2:
             return "Invalid location" 
-        users[user].set_location(coords[0], coords[1])
+        _usr.set_location(coords[0], coords[1])
         return "Updated location"
 
 
