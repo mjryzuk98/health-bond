@@ -19,7 +19,6 @@ def notify(user, number, location):
     response = requests.get(url).json()
 
     print(user + " just passed by " + response["results"][1]["name"])
-
     message = CLIENT.messages.create(
         body = user + " just passed by " + response["results"][1]["name"],
         from_ = CLIENT_NUM,
@@ -34,4 +33,3 @@ if __name__ == "__main__":
     number = "+19739002003"
     location = "40.5008,-74.4474"
     notify(user, number, location)
-
