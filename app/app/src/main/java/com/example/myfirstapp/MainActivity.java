@@ -1,28 +1,15 @@
 package com.example.myfirstapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.Manifest;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.HandlerThread;
 import android.os.Looper;
-import android.telephony.TelephonyManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,21 +19,11 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -61,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private int subSize;
 
     private String strLocation;
+    private String username;
 
     private LocationRequest mLocationRequest;
 
@@ -83,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView txt = findViewById(R.id.output);
         txt.setText("");
+        username = "";
 
         subNums = new ArrayList<String>();
         subSize = 0;
@@ -147,38 +126,59 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText = (EditText) findViewById(R.id.userNum);
         String message = editText.getText().toString();
         Intent intent1 = intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
 
     }
 
+
+    //captures phone number input from text boxes
     public void captureNumber(View view) {
         EditText number;
         try {
             switch (view.getId()) {
-                case R.id.button:
-                    number = findViewById(R.id.editText);
+                case R.id.button: //user's phone number
+                    number = findViewById(R.id.userNum);
                     String temp = number.getText().toString();
                     long num = Long.parseLong(temp);
                     myPhone = number.getText().toString();
-                    number.setText("");
+
+                    View subNum = findViewById(R.id.subNum);
+                    View button2 = findViewById(R.id.button2);
+                    View button3 = findViewById(R.id.button3);
+                    View yourFriends = findViewById(R.id.yourFriends);
+                    subNum.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    button3.setVisibility(View.VISIBLE);
+                    yourFriends.setVisibility(View.VISIBLE);
                     break;
 
-                case R.id.button2:
-                    number = findViewById(R.id.editText2);
+                case R.id.button2: //appending numbers that user is subscribed to
+                    number = findViewById(R.id.subNum);
                     num = Long.parseLong(number.getText().toString());
                     subNums.add(number.getText().toString());
                     subSize++;
+                    number.setText("");
                     //submitRequest();
                     break;
-                case R.id.button3:
+                case R.id.button3: //removing numbers that user is subscribed to
                     if (subSize > 0) {
                         subNums.remove(subNums.size() - 1);
                         subSize--;
                     }
                     break;
+                case R.id.button4: //setting username
+                    number = findViewById(R.id.name);
+                    username = number.getText().toString();
+
+                    View userNum = findViewById(R.id.userNum);
+                    View button = findViewById(R.id.button);
+                    View yourNumber = findViewById(R.id.yourNumber);
+                    userNum.setVisibility(View.VISIBLE);
+                    button.setVisibility(View.VISIBLE);
+                    yourNumber.setVisibility(View.VISIBLE);
             }
             updateLog();
         }
@@ -192,8 +192,9 @@ public class MainActivity extends AppCompatActivity {
         updateLog();
     }
 
+    //temporary debugging log that displays location coordinates and phone numbers on screen
     public void updateLog() {
-        String message = "Current Location:\n" + strLocation + "\nYour Phone Number:\n" + myPhone + "\nSubscribers Phone Numbers:\n";
+        String message = "Username: " + username + "\nCurrent Location:\n" + strLocation + "\nYour Phone Number:\n" + myPhone + "\nSubscribers Phone Numbers:\n";
         for (int i = 0; i < subNums.size(); i++) {
             message += subNums.get(i) + "\n";
         }
