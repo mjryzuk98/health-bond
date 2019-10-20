@@ -1,4 +1,5 @@
 from flask import Flask
+
 from user import User
 import services
 
@@ -38,12 +39,16 @@ def get_places(user=None, loc=None):
         return "Unable to update location"
     if user not in users:
         return "User not found, please register first"
-    coords = loc.split(",")
-    if len(coords) < 2:
-        return "Invalid location" 
-    users[user].set_location(coords[0], coords[1])
-    services.notify(users[user])
-    return "Updated location"
+    _usr = users[user]
+    if _usr.location() == loc:
+        services.notify(_usr)
+        return "Notified subscribers"
+    else:
+        coords = loc.split(",")
+        if len(coords) < 2:
+            return "Invalid location" 
+        users[user].set_location(coords[0], coords[1])
+        return "Updated location"
 
 
 if __name__ == "__main__":
