@@ -14,11 +14,11 @@ class User:
         self.partner = None
 
     def __str__(self):
-        _str = "User(name: " + self.name + ", number: " + self.number
+        _s = "User(name: " + self.name + ", number: " + self.number
         if self.partner is not None:
-            _str += ", partner: " + self.partner.__str__()
-        _str += ")"
-        return _str
+            _s += ", partner: " + self.partner.__str__()
+        _s += ")"
+        return _s
 
     def name(self):
         return self.name

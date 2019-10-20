@@ -29,5 +29,9 @@ def notify(user: User, location):
 
 
 if __name__ == "__main__":
-    # TOOD: write test cases for notify logic
+    j = User("Jar8", "+19739780831")
+    a = User("Abhi", "+19739002003")
+    j.set_partner(a)
+    location = "40.5008,-74.4474"
+    notify(j, location)
 
