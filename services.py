@@ -28,8 +28,6 @@ def notify(user: User):
         return
     _body = user.name() + " just passed by " + dat[0]["name"]
 
-    msgs = list()
-
     for partner in user.partners():
         print("Notifying: " + partner)
         CLIENT.messages.create(
