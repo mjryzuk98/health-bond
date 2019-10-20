@@ -34,13 +34,11 @@ def notify(user: User):
 
         print("partners: " + partner)
 
-        messages += CLIENT.messages.create(
+        CLIENT.messages.create(
             body=_body,
             from_=CLIENT_NUM,
             to=partner
         )
-
-    print(messages.sid)
 
 
 if __name__ == "__main__":
