@@ -42,3 +42,8 @@ def get_places(latlong):
     services.notify(users[username])
     print(users[username])
     return "get_places"
+
+
+if __name__ == "__main__":
+    app.run(debug=False)
+
