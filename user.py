@@ -43,9 +43,3 @@ class User:
         _s += ")"
         return _s
 
-
-if __name__ == "__main__":
-    j = User("Jar8", "+19739780831")
-    a = User("Abhi", "+19739002003")
-    j.set_partners(a)
-    j.set_location(40.5008, -74.4474)
