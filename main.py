@@ -33,7 +33,7 @@ def update_subscribers(user=None, subs=None):
 
 # xy coords separated by comma
 @app.route("/<user>/coords/<loc>")
-def get_places(user, loc):
+def get_places(user=None, loc=None):
     if user is None or loc is None:
         return "Unable to update location"
     if user not in users:
