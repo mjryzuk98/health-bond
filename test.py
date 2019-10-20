@@ -1,34 +1,37 @@
-from twilio.rest import Client
-from config import cfg
-import requests
 import json
-from config import cfg2
+import requests
 
-user_name = "abhinav"
+from twilio.rest import Client
+
+from config import cfg, cfg2
+
 
 RADIUS = "300"
 TYPE = "restaurant"
-
 URL_BASE = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + \
     "key=" + cfg2["api_key"] + "&radius=" + RADIUS + "&type=" + TYPE
-
-location = "40.5008,-74.4474"
-url = URL_BASE + "&location=" + location
-
-r = requests.get(url)
-
-response = r.json()
+CLIENT = Client(cfg["account_sid"], cfg["auth_token"])
+CLIENT_NUM = "+17732957498"
 
 
-print(user_name + " just passed by " + response["results"][0]["name"])
+def notify(user, number, location):
+    url = URL_BASE + "&location=" + location
+    response = requests.get(url).json()
+
+    print(user + " just passed by " + response["results"][0]["name"])
+
+    message = client.messages.create(
+        body = user + " just passed by " + response["results"][0]["name"],
+        from_ = CLIENT_NUM,
+        to = number
+    )
+
+    print(message.sid)
 
 
-client = Client(cfg["account_sid"], cfg["auth_token"])
-client_num = "+17732957498"
+if __name__ == "__main__":
+    user = "abhinav"
+    number = "+19739002003"
+    location = "40.5008,-74.4474"
+    notify(user, number, location)
 
-message = client.messages.create(
-    to=+19739002003,
-    from_=client_num,
-    body=user_name + " just passed by " + response["results"][0]["name"])
-
-print(message.sid)
