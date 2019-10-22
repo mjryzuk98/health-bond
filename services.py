@@ -12,7 +12,7 @@ CLIENT_NUM = "+17732957498"
 RADIUS = cfg["radius"]
 TYPE = cfg["type"]
 
-URL_BASE = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + \
+URL_BASE = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" + \
     "key=" + cfg["api_key"] + "&radius=" + RADIUS + "&type=" + TYPE
 
 
