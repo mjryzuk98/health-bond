@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Health Bond</string>
+    <string name="edit_message">Your Phone #</string>
+    <string name="button_send">Send</string>
+    <string name="edit_message2">Subscriber\'s Phone #</string>
+    <string name="username">Enter a username</string>
+    <string name="fullName">Enter your full name</string>
+</resources>
