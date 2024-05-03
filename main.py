@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, Response
 
 from user import User
 import services
@@ -19,8 +19,8 @@ def register(user=None, name=None, number=None):
     if user in users:
         return "User already exists"
     users[user] = User(name, number)
-    return "Registered " + user + " with name " + name \
-        + " and number " + number
+    return Response("Registered " + user + " with name " + name \
+        + " and number " + number, mimetype='text/plain')
 
 
 # subscribers: comma separated list
@@ -31,7 +31,7 @@ def update_subscribers(user=None, subs=None):
     if user not in users:
         return "User not found, please register first"
     users[user].set_partners(subs.split(","))
-    return "Updated subscribers for " + user
+    return Response("Updated subscribers for " + user, mimetype='text/plain')
 
 
 # xy coords separated by comma
