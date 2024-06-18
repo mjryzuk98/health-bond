@@ -6,7 +6,7 @@ pytz==2019.3
 requests==2.31.0
 six==1.12.0
 twilio==6.32.0
-urllib3==1.26.18
+urllib3==1.26.19
 appdirs==1.4.3
 attrs==19.3.0
 autopep8==1.4.4
@@ -32,6 +32,6 @@ requests==2.31.0
 six==1.12.0
 toml==0.10.0
 twilio==6.32.0
-urllib3==1.26.18
+urllib3==1.26.19
 Werkzeug==2.3.8
 yapf==0.28.0
